@@ -35,21 +35,24 @@ def run_window():
     menubar = Menu(window)
     window.config(menu=menubar)
 
-
     def hide_buttons():
         entersub_label.pack_forget()
         subject_entry.pack_forget()
         submit_button.pack_forget()
         delete_row.pack_forget()
 
-
     def subj_text_accepted(entered_text):
         empty_row(1)
         # page_navigator = Scale(window, from_=0, to=20, orient=HORIZONTAL).pack(side=BOTTOM, expand=2)
 
         article = scraper.search_subject(entered_text)
+
+        if (article == None):
+            print("ERR, ERR, ERR")
+            article = "failed"
+
         hide_buttons()
-        #subj_text_accepted.__code__ = (lambda x: None).__code__
+        # subj_text_accepted.__code__ = (lambda x: None).__code__
 
         tab_control = ttk.Notebook(window)
         overview = ttk.Frame(tab_control)
@@ -77,19 +80,8 @@ def run_window():
         xlbl3 = Label(revisions, text="revisions 3").pack()
         xlbl4 = Label(revisions, text="revisions 4").pack()
 
-        # editArea = ScrolledText(master=suggest, wrap=WORD, width=20, height=10, text="times 12")
-        # # -- EDIT AREA !!! MAKE ALTERNATE WINDOW W INFO ###
-        # # editArea.insert('1.0', article)
-        # editArea.pack(padx=10, pady=10, fill=BOTH, expand=True)
-
-        # --- scrolling feature ----
-        # canvas.configure(yscrollcommand=scroll_y.set, xscrollcommand=scroll_x.set)
-        # canvas.configure(scrollregion=canvas.bbox("all"))
-
-
     def hello():
         messagebox.showinfo("hello")
-
 
     def new_page():
         # entersub_label.pack()
@@ -100,7 +92,6 @@ def run_window():
         # essay_text.pack_forget()
         # w.pack_forget()
         pass
-
 
     # region --MENU--
     submenu = Menu(menubar, tearoff=0)
@@ -135,9 +126,7 @@ def run_window():
     helpmenu.add_separator()
     helpmenu.add_command(label="About...", command=hello)
 
-
     # endregion
-
 
     def submit_click():
         while True:
@@ -151,16 +140,14 @@ def run_window():
 
             if entered_text != "":
                 subj_text_accepted(entered_text)
+
                 break
             False
 
-
-    # region --MAIN PAGE--
-    # page overview // will be adding a page mgmt thru classes
+    # region --MAIN PAGE-- || page overview // will be adding a page mgmt thru classes
     def empty_row(quantity):
         for _ in range(quantity):
             empty = Label(window, text=" ", font="none 12", anchor=CENTER).pack()
-
 
     empty_row(1)
     title_label = Label(window, text="INTEL WRITER", font="times 12 bold", anchor=CENTER).pack()
@@ -176,18 +163,8 @@ def run_window():
 
     # endregion
 
-
     # main loop
     window.mainloop()
-
-
-
-
-
-
-
-
-
 
 # ~ RESOURCES ~
 

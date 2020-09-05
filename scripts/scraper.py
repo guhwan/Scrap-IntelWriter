@@ -1,16 +1,22 @@
 from bs4 import BeautifulSoup, element
 import requests
 
-
-
 def search_subject(subject):
     source = requests.get('https://en.wikipedia.org/wiki/{}'.format(subject)).text
     soup = BeautifulSoup(source, 'lxml')
-    article = soup.find('div', class_='mw-content-ltr').text
-    return article
+    full_article = soup.find('div', class_='mw-content-ltr')
+
+    li = []
+    for x in full_article.find_all('p'):
+        li.append(x.text)
+
+    listToStr = '\n'.join([str(elem) for elem in li])
+
+    if(len(listToStr) < 100):
+        return None
 
 
-
+    return listToStr
 
 
 def list_categories(subject):
@@ -26,6 +32,14 @@ def list_categories(subject):
 
     #div id="toc" class="toc" role="navigation"
     #return contents
+
+
+
+
+
+#a = input("Search Term: ")
+#print(search_subject(a))
+
 
 
 

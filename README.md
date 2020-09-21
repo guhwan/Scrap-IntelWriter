@@ -7,6 +7,7 @@ Simple experimental AI writer with interface. It's main use is to generate origi
 
 
 TODO
+
 -[ ] learning.py functionality, analyze a passage and extact 
 -[ ] build basic language model
 -[ ] integrate database of language model

@@ -15,45 +15,12 @@ from scripts import scraper
 
 # region --INIT WINDOW--
 
-def run_window():
-    window = Tk()
-    window.title('IntelWriter')
-    window.resizable(0, 0)
-    windowWidth = window.winfo_reqwidth()
-    windowHeight = window.winfo_reqheight()
-    positionRight = int(window.winfo_screenwidth() / 2.5 - windowWidth)
-    positionDown = int(window.winfo_screenheight() / 3 - windowHeight)
-    window.geometry("600x600+{}+{}".format(positionRight, positionDown))
 
-    # frame ??
-    notes = Frame(window)
-    notes.pack()
+new_page_seq = False
 
-    # endregion
 
-    # menu
-    menubar = Menu(window)
-    window.config(menu=menubar)
-
-    def hide_buttons():
-        entersub_label.pack_forget()
-        subject_entry.pack_forget()
-        submit_button.pack_forget()
-        delete_row.pack_forget()
-
-    def subj_text_accepted(entered_text):
-        empty_row(1)
-        # page_navigator = Scale(window, from_=0, to=20, orient=HORIZONTAL).pack(side=BOTTOM, expand=2)
-
-        article = scraper.search_subject(entered_text)
-
-        if (article == None):
-            print("ERR, ERR, ERR")
-            article = "failed"
-
-        hide_buttons()
-        # subj_text_accepted.__code__ = (lambda x: None).__code__
-
+class MainWindow(object):
+    def build_main(self):
         tab_control = ttk.Notebook(window)
         overview = ttk.Frame(tab_control)
         suggest = ttk.Frame(tab_control)  # make frame for suggestions ~~ !! print results
@@ -67,7 +34,7 @@ def run_window():
         # if mouse hovers over line / sentence, the string is highlighted, clickable and copied to clipboard, etc
 
         editArea = ScrolledText(master=overview, wrap=WORD, width=20, height=10, font="times 10")
-        editArea.insert('1.0', article)
+        editArea.insert('1.0', build_editspace())
         editArea.pack(padx=10, pady=10, fill=BOTH, expand=True)
 
         lbl1 = Label(suggest, text="suggest 1").pack()
@@ -80,23 +47,53 @@ def run_window():
         xlbl3 = Label(revisions, text="revisions 3").pack()
         xlbl4 = Label(revisions, text="revisions 4").pack()
 
+
+class WindowFunctions():
+
+
+    def editspace_hideUI():
+        enter_label.pack_forget()
+        subject_entry.pack_forget()
+        submit_button.pack_forget()
+        delete_row.pack_forget()
+
+    def build_editspace(entered_text):
+        empty_row(1)
+        # page_navigator = Scale(window, from_=0, to=20, orient=HORIZONTAL).pack(side=BOTTOM, expand=2)
+
+        article = scraper.search_subject(entered_text)
+
+        if article is None:
+            article = "failed"
+
+        editspace_hideUI()
+
+        if(new_page_seq == True):
+            #editArea.delete()
+            pass
+
+        return article
+
+    def subj_text_accepted(entered_text):
+        build_editspace(entered_text)
+
     def hello():
         messagebox.showinfo("hello")
 
-    def new_page():
-        # entersub_label.pack()
-        # subject_entry.pack()
-        # submit_button.pack()
-        # delete_row.pack()
+    def newpage():
+        enter_label.pack()
+        subject_entry.pack()
+        submit_button.pack()
+        delete_row.pack()
 
-        # essay_text.pack_forget()
-        # w.pack_forget()
-        pass
+        new_page_seq = True
+        #w.pack_forget()
 
+class Menu():
     # region --MENU--
     submenu = Menu(menubar, tearoff=0)
     menubar.add_cascade(label="File", menu=submenu)
-    submenu.add_command(label="New", command=new_page)
+    submenu.add_command(label="New", command=newpage)
     submenu.add_command(label="Open", command=hello)
     submenu.add_command(label="Save", command=hello)
     submenu.add_command(label="Save As...", command=hello)
@@ -126,7 +123,6 @@ def run_window():
     helpmenu.add_separator()
     helpmenu.add_command(label="About...", command=hello)
 
-    # endregion
 
     def submit_click():
         while True:
@@ -149,22 +145,40 @@ def run_window():
         for _ in range(quantity):
             empty = Label(window, text=" ", font="none 12", anchor=CENTER).pack()
 
-    empty_row(1)
-    title_label = Label(window, text="INTEL WRITER", font="times 12 bold", anchor=CENTER).pack()
-    delete_row = Label(window, text=" ", font="times 12 bold", anchor=CENTER)
-    delete_row.pack()
-    entersub_label = Label(window, text="Enter subject:", font="times 12", anchor=CENTER)
-    entersub_label.pack()
-    subject_entry = Entry(window)
-    subject_entry.pack()
-    empty_row(1)
-    submit_button = Button(window, text="submit", font="times 12", height=1, width=6, command=submit_click)
-    submit_button.pack(side=TOP)
+empty_row(1)
+title_label = Label(window, text="INTEL WRITER", font="times 12 bold", anchor=CENTER).pack()
+delete_row = Label(window, text=" ", font="times 12 bold", anchor=CENTER)
+delete_row.pack()
+enter_label = Label(window, text="Enter subject:", font="times 12", anchor=CENTER)
+enter_label.pack()
+subject_entry = Entry(window)
+subject_entry.pack()
+empty_row(1)
+submit_button = Button(window, text="submit", font="times 12", height=1, width=6, command=submit_click)
+submit_button.pack(side=TOP)
 
-    # endregion
 
-    # main loop
-    window.mainloop()
+
+# window initialization
+window = Tk()
+window.title('IntelWriter')
+window.resizable(0, 0)
+windowWidth = window.winfo_reqwidth()
+windowHeight = window.winfo_reqheight()
+positionRight = int(window.winfo_screenwidth() / 2.5 - windowWidth)
+positionDown = int(window.winfo_screenheight() / 3 - windowHeight)
+window.geometry("600x600+{}+{}".format(positionRight, positionDown))
+
+# frame ??
+notes = Frame(window)
+notes.pack()
+
+# menu
+menubar = Menu(window)
+window.config(menu=menubar)
+
+# main loop
+window.mainloop()
 
 # ~ RESOURCES ~
 

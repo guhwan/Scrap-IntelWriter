@@ -1,5 +1,6 @@
-from bs4 import BeautifulSoup, element
+from bs4 import BeautifulSoup
 import requests
+
 
 def search_subject(subject):
     source = requests.get('https://en.wikipedia.org/wiki/{}'.format(subject)).text
@@ -12,7 +13,7 @@ def search_subject(subject):
 
     listToStr = '\n'.join([str(elem) for elem in li])
 
-    if(len(listToStr) < 100):
+    if len(listToStr) < 100:
         return None
 
 

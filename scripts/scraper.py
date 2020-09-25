@@ -38,8 +38,6 @@ def list_categories(subject):
 
 
 
-#a = input("Search Term: ")
-#print(search_subject(a))
 
 
 

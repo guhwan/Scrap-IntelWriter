@@ -5,4 +5,5 @@ from scripts import window
 if __name__ == '__main__':
     #a = input("Search Term: ")
     #print(scraper.search_subject(a))
+
     pass

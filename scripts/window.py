@@ -36,23 +36,19 @@ def empty_row(quantity):
     for _ in range(quantity):
         empty = Label(window, text=" ", font="none 12", anchor=CENTER).pack()
 
-def submit_click(recall=False):
+def submit_click():
     while True:
         entered_text = subject_entry.get()
         subject_entry.delete(0, "end")
 
         if entered_text == "":
-            subject_entry.delete(0, "end")
             print("not accepted")
             break
 
         if entered_text != "":
             ff = show_edit_window()
             editspace_hideUI()
-            if recall==True:
-                print("accepted")
-                ff = editspace(entered_text)
-                return ff
+            print("accepted")
         False
 
 # search display
@@ -140,7 +136,7 @@ def show_edit_window():
 
     # if mouse hovers over line / sentence, the string is highlighted, clickable and copied to clipboard, etc
     editArea = ScrolledText(master=overview, wrap=WORD, width=20, height=10, font="times 10")
-    editArea.insert('1.0', submit_click(recall=True))
+    editArea.insert('1.0', editspace(str(subject_entry.get())))
     editArea.pack(padx=10, pady=10, fill=BOTH, expand=True)
 
     lbl1 = Label(suggest, text="suggest 1").pack()

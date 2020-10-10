@@ -16,7 +16,6 @@ def search_subject(subject):
     if len(listToStr) < 100:
         return None
 
-
     return listToStr
 
 
